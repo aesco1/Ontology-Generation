@@ -17,13 +17,13 @@ class OllamaClient:
         self.base_url = base_url
         self.api_generate = f"{base_url}/api/generate"
         
-    def generate_ontology(self, domain: str, model: str = "llama3", format: str = "json") -> Dict[str, Any]:
+    def generate_ontology(self, domain: str, model: str = "llama3.2", format: str = "json") -> Dict[str, Any]:
         """
         Generate an ontology for a given domain with specific labeled relationships.
         
         Args:
             domain: The domain for which to generate an ontology
-            model: The model to use for generation. Default is "llama3".
+            model: The model to use for generation. Default is "llama3.2".
             format: The desired output format. Default is "json".
             
         Returns:
@@ -110,7 +110,7 @@ class OllamaClient:
 
 def main():
     """Command line interface for the ontology generator."""
-    parser = argparse.ArgumentParser(description="Generate ontologies using Ollama llama3 model")
+    parser = argparse.ArgumentParser(description="Generate ontologies using Ollama llama3.2 model")
     parser.add_argument("domain", help="The domain for which to generate an ontology")
     parser.add_argument("--format", default="json", choices=["json", "text"], help="Output format")
     parser.add_argument("--output", help="Output file path (if not specified, prints to console)")
@@ -122,8 +122,8 @@ def main():
     
     # Generate the ontology
     try:
-        print(f"Generating ontology for domain: {args.domain} using model: llama3...")
-        ontology = client.generate_ontology(args.domain, "llama3", args.format)
+        print(f"Generating ontology for domain: {args.domain} using model: llama3.2 ...")
+        ontology = client.generate_ontology(args.domain, "llama3.2", args.format)
         
         # Output the result
         output_text = json.dumps(ontology, indent=2)
