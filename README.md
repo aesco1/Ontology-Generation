@@ -43,6 +43,4 @@ The project is divided into two focused teams:
 - Website Development Team
 - LLM/Integration Team
 
-## Project Status
 
-Current project status and sprint updates can be found in `docs/STATUS.md`.
