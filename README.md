@@ -19,7 +19,6 @@ The repository is organized into 3 main components:
 - Python 3.8+
 - WordPress development environment
 - Ollama framework
-- PyTorch and Transformers libraries
 - MySQL 5.7+
 
 ### Installation
