@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ontology Generator
  * Description: WordPress plugin to generate ontologies using Llama 3.2
- * Version: 3.0
+ * Version: 4.0
  */
 
 // Prevent direct access
@@ -38,93 +38,185 @@ function ontology_generator_shortcode() {
 
     <!--- CSS STYLES -->
     <style>
+        /* UTD Brand Colors */
+        :root {
+            --utd-green: #154734;
+            --utd-orange: #E87500;
+            --utd-white: #fff;
+            --ut-black: #333333;
+            --silverleaf: #5fe0b7;
+            --web-orange: #c95100;
+        }
+        
+        /* Base Typography */
         .ontology-generator-container {
+            font-family: din-2014, sans-serif;
+            font-weight: 400;
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--ut-black);
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background: #f9f9f9;
+            background: var(--utd-white);
             border-radius: 5px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-sizing: border-box;
         }
+        
+        /* Headings */
+        .ontology-generator-container h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--utd-orange);
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -0.83px;
+        }
+        
+        .ontology-generator-container p {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        /* Form elements */
         .form-group {
             margin-bottom: 15px;
+            box-sizing: border-box;
+            width: 100%;
         }
+        
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: var(--utd-green);
         }
-        input[type="text"] {
+        
+        .ontology-generator-container input[type="text"] {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
             font-size: 16px;
+            color: var(--ut-black);
+            border: 2px solid var(--utd-green);
+            background-color: transparent;
+            outline: none;
+            font-family: inherit;
+            box-sizing: border-box;
         }
+        
+        /* UTD Button */
         .submit-button {
-            background: #0073aa;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            width: 100%;
+            padding: 5px 26px;
+            font-size: 1.3125rem;
+            font-weight: 700;
+            color: var(--ut-black);
+            background-color: var(--utd-white);
+            text-transform: uppercase;
+            text-align: center;
+            border-width: 2px;
+            border-style: solid;
+            border-radius: 0;
+            border-image: linear-gradient(to right, #154734 0%, #e87500 100%);
+            border-image-slice: 1;
+            transition: 0.3s;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            font-family: inherit;
+            box-sizing: border-box;
         }
-        .submit-button:hover {
-            background: #005177;
+        
+        .submit-button:hover,
+        .submit-button:focus {
+            color: var(--utd-white);
+            background-color: var(--utd-green);
+            text-decoration: none;
         }
+        
+        /* Results area */
         .result-container {
             margin-top: 30px;
             padding: 20px;
-            background: white;
+            background: var(--utd-white);
             border: 1px solid #ddd;
             border-radius: 4px;
             min-height: 100px;
+            box-sizing: border-box;
         }
-        .loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #0073aa;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 2s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .error {
-            color: #d63638;
-            padding: 10px;
-            background: #ffebe8;
-            border-left: 4px solid #d63638;
-        }
-        h3 {
-            color: #0073aa;
+        
+        .domain-header {
+            color: var(--utd-green);
             margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
+        
+        /* Relationships container */
         .relationships-container {
             margin: 20px 0;
         }
+        
+        /* Individual relationship items */
         .relationship-item {
             background: #f5f7fa;
             border: 1px solid #e1e4e8;
+            border-left: 4px solid var(--utd-orange);
             border-radius: 5px;
             padding: 10px 15px;
             margin-bottom: 10px;
             font-size: 16px;
             line-height: 1.5;
         }
+        
         .entity {
             font-weight: bold;
-            color: #0073aa;
+            color: var(--utd-orange);
         }
+        
         .relation {
             font-style: italic;
-            color: #333;
+            color: var(--utd-green);
             margin: 0 10px;
+        }
+        
+        /* Loader */
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--utd-orange);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Error message */
+        .error {
+            color: #d63638;
+            padding: 10px;
+            background: #ffebe8;
+            border-left: 4px solid #d63638;
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .loader {
+                animation: none;
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .ontology-generator-container h2 {
+                font-size: 2.1875rem;
+                letter-spacing: -0.72px;
+            }
         }
     </style>
 
@@ -138,7 +230,7 @@ function ontology_generator_shortcode() {
                 
                 var domain = $('#domain').val();
                 
-                // Make AJACK call to script
+                // Make AJAX call to script
                 $.ajax({
                     url: '<?php echo admin_url('admin-ajax.php'); ?>',
                     type: 'POST',
@@ -147,9 +239,11 @@ function ontology_generator_shortcode() {
                         domain: domain,
                         nonce: '<?php echo wp_create_nonce('ontology_generator_nonce'); ?>'
                     },
-                    // Expected response format:
+
+                    //Expected response format:
                     // {success: true, data: {domain: ...}
                     // {success: false, data: "error msg"}
+
                     success: function(response) {
                         $('#loading-indicator').hide();
                         
@@ -174,7 +268,7 @@ function ontology_generator_shortcode() {
                     domainText = String(ontology.domain);
                 }
                 
-                var html = '<h3>Relationships for Domain: ' + domainText + '</h3>';
+                var html = '<h3 class="domain-header">Relationships for Domain: ' + domainText + '</h3>';
                 
                 // Check data structure
                 if (!ontology || typeof ontology !== 'object' || !Array.isArray(ontology.relationships)) {
@@ -183,8 +277,8 @@ function ontology_generator_shortcode() {
                     return;
                 }
                 
-                // Maps and normalizes the relationship data
-                // Fallbacks used for missing values
+                // Map and normalizes the rel. data
+                // Fallbaks used for missing values
                 var relationships = ontology.relationships.map(function(rel) {
                     return {
                         from: rel.from || "Unknown Source",
@@ -240,7 +334,7 @@ function generate_ontology_callback() {
     $python_path = 'python3'; 
     $script_path = plugin_dir_path(__FILE__) . 'ontology_generator.py';
     
-    // Build and escape for securtiy purposes
+    // Build and escape for security purposes
     $command = escapeshellcmd($python_path . ' ' . $script_path . ' ' . escapeshellarg($domain));
     
     $output = shell_exec($command);
@@ -280,7 +374,7 @@ function generate_ontology_callback() {
     }
 }
 
-// AJAX  handlers for logged-in/non-logged in users
+// AJAX handlers for logged-in/non-logged in users
 add_action('wp_ajax_generate_ontology', 'generate_ontology_callback');
 add_action('wp_ajax_nopriv_generate_ontology', 'generate_ontology_callback');
 
@@ -292,10 +386,10 @@ function ontology_generator_admin_menu() {
     add_menu_page(
         'Ontology Generator',               // Page title
         'Ontology Generator',               // Menu title
-        'manage_options',                   //Capability
+        'manage_options',                   // Capability
         'ontology-generator',               // Menu slug
-        'ontology_generator_admin_page',    //Callback function
-        'dashicons-networking',             //Icon
+        'ontology_generator_admin_page',    // Callback function
+        'dashicons-networking',             // Icon
         30                                  // Position
     );
 }
@@ -321,6 +415,11 @@ function ontology_generator_admin_page() {
                 <li>Ollama running with Llama 3.2 model available</li>
                 <li>The requests Python package (<code>pip install requests</code>)</li>
             </ul>
+        </div>
+        
+        <div class="card" style="max-width: 800px; margin-top: 20px; padding: 20px; background: white; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04);">
+            <h2>UTD Theme</h2>
+            <p>This plugin uses the University of Texas at Dallas (UTD) Oberon theme color scheme.</p>
         </div>
         
         <div class="card" style="max-width: 800px; margin-top: 20px; padding: 20px; background: white; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04);">
