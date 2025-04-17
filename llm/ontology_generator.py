@@ -11,11 +11,6 @@ class OllamaClient:
         self.api_generate = f"{base_url}/api/generate"
     
     def extract_json_from_text(self, text):
-        """ Extract valid JSON from text response
-            Use different methods (parse the entire text as JSON),
-            Looking in between outermost braces, Look in code blocks,
-            if not fallback ontology is used """
-        
         try:
             return json.loads(text)
         except json.JSONDecodeError:
@@ -115,7 +110,6 @@ class OllamaClient:
                 timeout=120
             )
             
-            # Check for Ollama API errors
             if response.status_code != 200:
                 print(f"Error response from Ollama: {response.status_code}", file=sys.stderr)
                 return self.create_fallback_ontology(domain)
@@ -136,7 +130,7 @@ class OllamaClient:
                 print(f"No valid relationships found in response, using fallback", file=sys.stderr)
                 ontology["relationships"] = self.create_fallback_ontology(domain)["relationships"]
                 
-            # Validate that each relationships has reqd fields
+            # Validate each relationship
             valid_relationships = []
             for rel in ontology.get("relationships", []):
                 if isinstance(rel, dict) and "from" in rel and "to" in rel and "relationship" in rel:
@@ -150,6 +144,7 @@ class OllamaClient:
                 
             return ontology
         
+        # return error and fallback ontology
         except Exception as e:
             print(f"Error generating ontology: {str(e)}", file=sys.stderr)
             traceback.print_exc(file=sys.stderr)
@@ -159,6 +154,7 @@ class OllamaClient:
             return fallback
 
 def main():
+    """Command line interface for the ontology generator."""
     import argparse
     
     parser = argparse.ArgumentParser(description='Generate domain ontologies using Llama 3.2')
