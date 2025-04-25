@@ -61,12 +61,13 @@ The repository is organized into 3 main components:
        chmod +x ontology_generator.py
        
    For Windows(Native)
-     1. Download the ontology_generator.py script from the repo
-     2. Run script directly with python
+    - Download the ontology_generator.py script from the repo
+    - Run script directly with python
         - In powershell python ontology_generator.py "domain"
   
 5. WordPress Plugin Installation
    For macOS/WSL
+   
    1. Create folder ontology-generator in your WordPress plugins directory (wp-content/plugins/)
    2. Copy both ontology_generator.php and ontology_generator.py to the folder
    3. Make the Python script executable
@@ -87,8 +88,10 @@ The repository is organized into 3 main components:
    5. Navigate to Plugins, then Installed Plugins
    6. Find "Ontology Generator (Visual)" and click Activate
       
-Running the Application
-Method 1: Command Line (Generate ontologyies directly from Command Line)
+### Running the Application  
+
+Method 1: Command Line (Generate ontologyies directly from Command Line)  
+
   For WSL/macOS
   1. Start Ollama service:
      - ollama serve
