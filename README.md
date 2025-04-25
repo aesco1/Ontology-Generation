@@ -29,36 +29,37 @@ The repository is organized into 3 main components:
   2. Run the download .exe file and follow the installation prompts
 
   For WSL2:
-  1. Ensure WSL2 is installed and configured
+  - Ensure WSL2 is installed and configured
      Run in PowerShell as Admin
      wsl --install
-  2. Launch your distribution
-  3. Install Ollama in WSL2
+  - Launch your distribution
+  - Install Ollama in WSL2
      curl -fsSL https://ollama.com/install.sh | sh
-  4. Verify the installation
+  - Verify the installation
      ollama --version
 
   For macOS:
-  1. Download the installer from https://ollama.com/download
-  2. Open the downloaded .dmg file
-  3. Drag the Ollama app to your Applications folder
-  4. Launch Ollama from your Applications folder
+  - Download the installer from https://ollama.com/download
+  - Open the downloaded .dmg file
+  - Drag the Ollama app to your Applications folder
+  - Launch Ollama from your Applications folder
   
   For Windows:
-  Download and install from https://ollama.com/download
+  - Download and install from https://ollama.com/download
 
 2. Pull the DeepSeek R1 7B Model
    After installing Ollama, pull the required model:
    ollama pull deepseek-r1:7b
 
 3. Install Python Dependencies
-   pip install requests
+    - pip install requests
 
 4. Set Up the Ontology Generator Python Script
    For macOS/WSL:
-     1. Download the ontology_generator.py script from the repo
-     2. Make the script executable:
-        chmod +x ontology_generator.py
+    - Download the ontology_generator.py script from the repo
+    -  Make the script executable:
+       chmod +x ontology_generator.py
+       
    For Windows(Native)
      1. Download the ontology_generator.py script from the repo
      2. Run script directly with python
