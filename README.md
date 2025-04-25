@@ -4,7 +4,7 @@ An interactive application that automates the creation of domain ontologies duri
 
 ## Project Overview
 
-This project combines a local LLM application using Ollama and Llama 3.2 with a WordPress-based testing platform to streamline the requirements elicitation process through automated ontology generation.
+This project combines a local LLM application using Ollama and DeepSeek R1 with a WordPress-based testing platform to streamline the requirements elicitation process through automated ontology generation.
 
 ## Repository Structure
 
