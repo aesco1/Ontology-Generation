@@ -30,7 +30,7 @@ The repository is organized into 3 main components:
 
   For WSL2:
   1. Ensure WSL2 is installed and configured
-     # Run in PowerShell as Admin
+     Run in PowerShell as Admin
      wsl --install
   2. Launch your distribution
   3. Install Ollama in WSL2
