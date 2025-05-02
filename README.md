@@ -55,7 +55,7 @@ This project provides separate implementations for Linux/WSL and Windows environ
    ~~~
    # Run in PowerShell as Admin
    wsl --install
-   ~~~
+   ```
 2. Launch your distribution
 3. Install Ollama in WSL2
    ~~~
@@ -84,7 +84,48 @@ ollama pull deepseek-r1:7b
 pip install requests
 ~~~
 
-### 4. Set Up the Ontology Generator Python Script
+### 4. Set Up Web Server Environment
+
+**For WSL/Linux**
+1. Install Apache, MySQL, and PHP:
+   ~~~
+   sudo apt update
+   sudo apt install apache2 mysql-server php php-mysql
+   ~~~
+
+2. Start and enable the services:
+   ~~~
+   sudo systemctl start apache2
+   sudo systemctl enable apache2
+   sudo systemctl start mysql
+   sudo systemctl enable mysql
+   ~~~
+
+3. Secure MySQL installation:
+   ~~~
+   sudo mysql_secure_installation
+   ~~~
+
+4. Create a database for WordPress:
+   ~~~
+   sudo mysql -u root -p
+   CREATE DATABASE wordpress;
+   CREATE USER 'wordpress_user'@'localhost' IDENTIFIED BY 'your_password';
+   GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress_user'@'localhost';
+   FLUSH PRIVILEGES;
+   EXIT;
+   ~~~
+
+**For Windows (XAMPP)**
+1. Download and install XAMPP from [https://www.apachefriends.org/](https://www.apachefriends.org/)
+2. Start Apache and MySQL from XAMPP Control Panel
+3. Create a database for WordPress using phpMyAdmin:
+   - Open http://localhost/phpmyadmin/
+   - Click "New" in the left sidebar
+   - Enter "wordpress" as the database name
+   - Click "Create"
+
+### 5. Set Up the Ontology Generator Python Script
 
 **For macOS/WSL**
 - Use the `ontology_generator.py` script from the `llm/` directory
@@ -101,7 +142,30 @@ pip install requests
   python ontology_generator_windows.py "domain"
   ~~~
 
-### 5. WordPress Plugin Installation
+### 6. WordPress Installation
+
+**For WSL/Linux**
+1. Download and extract WordPress:
+   ~~~
+   cd /var/www/html
+   sudo wget https://wordpress.org/latest.tar.gz
+   sudo tar -xzvf latest.tar.gz
+   sudo mv wordpress ontology
+   sudo chown -R www-data:www-data ontology
+   sudo chmod -R 755 ontology
+   ~~~
+
+2. Configure WordPress:
+   - Navigate to http://localhost/ontology in your browser
+   - Follow the setup wizard, using the database credentials you created earlier
+
+**For Windows (XAMPP)**
+1. Download WordPress from [https://wordpress.org/download/](https://wordpress.org/download/)
+2. Extract to C:\xampp\htdocs\ontology
+3. Navigate to http://localhost/ontology in your browser
+4. Follow the setup wizard, using the database credentials you created earlier
+
+### 7. WordPress Plugin Installation
 
 **For macOS/WSL**
 1. Create folder `ontology-generator` in your WordPress plugins directory (wp-content/plugins/)
@@ -112,7 +176,7 @@ pip install requests
    ~~~
 4. Ensure web server user has permission to execute the script
    ~~~
-   chown www-data:www-data wp-content/plugins/ontology-generator/ontology_generator.py
+   sudo chown www-data:www-data wp-content/plugins/ontology-generator/ontology_generator.py
    ~~~
 5. Log in to your WordPress admin panel
 6. Navigate to Plugins, then Installed Plugins
@@ -120,7 +184,7 @@ pip install requests
 
 **For Windows-hosted WordPress**
 1. Create a new folder called `ontology-generator` in your WordPress plugins directory
-   (typically C:\path\to\wordpress\wp-content\plugins\)
+   (typically C:\xampp\htdocs\wordpress\wp-content\plugins\)
 2. Copy `ontology_generator_windows.py` to this folder and rename it to `ontology_generator.py`
 3. Copy `ontology-visualizer_windows.php` to this folder and rename it to `ontology-visualizer.php`
 4. Edit the PHP file if needed to ensure the Python path is correctly set
@@ -165,9 +229,17 @@ pip install requests
    - A cache file will be created in the `cache` directory next to the script
 
 ### Method 2: WordPress Interface
-1. Ensure Ollama is running:
-   - For WSL/macOS: `ollama serve`
-   - For Windows: Ollama should be running in the background (check system tray)
+1. Ensure all services are running:
+   - **For WSL/Linux**: 
+     ~~~
+     sudo systemctl start apache2
+     sudo systemctl start mysql
+     ollama serve
+     ~~~
+   - **For Windows**: 
+     - Start Apache and MySQL from XAMPP Control Panel
+     - Ensure Ollama is running in the background
+
 2. Create a new WordPress page or post
 3. Add the shortcode `[ontology_visualizer]` to the page and publish
 4. Ontology Generator Form should now be usable:
@@ -189,8 +261,17 @@ pip install requests
   - Try accessing http://localhost:11434/api/tags in your browser
 - **WordPress plugin errors**: Check PHP error logs in your web server
   - For XAMPP: Check logs in xampp/apache/logs/error.log
+- **Apache/MySQL not starting**: Check for port conflicts
+  - Services like Skype may use port 80
+  - Use Task Manager to identify and close conflicting applications
 
 ### WSL-Specific Issues
+- **Apache/MySQL service issues**: Check service status and logs
+  ~~~
+  sudo systemctl status apache2
+  sudo systemctl status mysql
+  sudo tail -f /var/log/apache2/error.log
+  ~~~
 - **Connectivity issues**: If WordPress can't connect to Ollama in WSL
   - Try running Ollama with specific binding: `OLLAMA_HOST=0.0.0.0 ollama serve`
   - Configure port forwarding to access WSL services from Windows
@@ -198,6 +279,11 @@ pip install requests
   ~~~
   sudo chown www-data:www-data ontology_generator.py
   sudo chmod +x ontology_generator.py
+  ~~~
+- **WSL filesystem permissions**: Sometimes Windows permissions can affect WSL
+  ~~~
+  sudo chown -R www-data:www-data /var/www/html/ontology
+  sudo chmod -R 755 /var/www/html/ontology
   ~~~
 
 ## Development Guidelines
