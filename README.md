@@ -20,7 +20,6 @@ ontology-generator/
 └── website/               # Houses the WordPress-based testing platform
     ├── ontology-visualizer.php           # Linux/WSL version of WordPress plugin
     ├── ontology-visualizer_windows.php   # Windows-specific version of WordPress plugin
-    └── [other website files]
 ~~~
 
 ## Platform-Specific Files
@@ -55,7 +54,7 @@ This project provides separate implementations for Linux/WSL and Windows environ
    ~~~
    # Run in PowerShell as Admin
    wsl --install
-   ```
+
 2. Launch your distribution
 3. Install Ollama in WSL2
    ~~~
@@ -295,8 +294,6 @@ pip install requests
   - development: Integration branch
   - feature/*: Individual feature branches
   - hotfix/*: Emergency fixes
-- When making changes, update both the Linux and Windows versions of the code
-- Test your changes on both platforms before submitting a pull request
 - Follow the existing code style and documentation practices
 
 ## Team Structure
